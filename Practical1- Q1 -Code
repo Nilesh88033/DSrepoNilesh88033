@@ -1,75 +1,72 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
-int vertices, edges;
-vector<vector<int>> graph;
-void graphinput()
+
+int main()
 {
-    cout << "Enter the number of vertices: ";
+    int a, vertices, edges;
+    int row = 1;
+    edges = 0;
+    cout << "Enter number of vertices: ";
     cin >> vertices;
-    cout << "Enter the number of edges: ";
-    cin >> edges;
+
+    int mat[vertices][vertices] = {0};
 
     for (int i = 0; i < vertices; i++)
     {
-        graph.push_back(vector<int>());
-        for (int j = 0; j < vertices; j++)
+        for (int j = i; j < vertices; j++)
         {
-            graph[i].push_back(0);
-        }
-    }
-    cout << "Enter connected vertices two at a time(those joined by edges): " << endl;
-    int vert1, vert2;
-    for (int i = 0; i < edges; i++)
-    {
-        cin >> vert1 >> vert2;
-        graph[vert1 - 1][vert2 - 1] = 1;
-        graph[vert2 - 1][vert1 - 1] = 1;
-    }
-}
-int main()
-{
-    int f = 0;
-    graphinput();
-    vector<int> visiting;
-    vector<int> visited;
-    visiting.push_back(2);
-    for (int i = 0; i < 6; i++)
-    {
-        for (int j = 0; j < 6; j++)
-        {
-            if (graph[visiting[0]][j] == 1 && !count(visiting.begin(), visiting.end(), j) && !count(visited.begin(), visited.end(), j))
+            if (i != j)
             {
-                visiting.push_back(j);
+              
+                cout << "Are " << i + 1 << " and " << j + 1 << " connected? \nPress 1 for Yes and 0 for No: ";
+                cin >> a;
+                if (a == 1)
+                {
+                    mat[i][j] = mat[j][i] = 1;
+                }
+                else
+                {
+                    mat[i][j] = 0;
+                }
             }
         }
+    }
 
-        if (!visiting.empty())
-        {
-            visited.push_back(visiting[0]);
-            visiting.erase(visiting.begin());
-        }
-        else
-        {
-            break;
-        }
-    }
-    for (int i = 0; i < 6; i++)
+ 
+    for (int i = 0; i < vertices; i++)
     {
-        if (!count(visited.begin(), visited.end(), i))
+        cout << " (" << i + 1 << ")";
+    }
+    cout << endl;
+
+    for (int i = 0; i < vertices; i++)
+    {
+        cout << endl
+             << "(" << row << ") ";
+        row++;
+        for (int j = 0; j < vertices; j++)
         {
-            f = 1;
-            break;
+            cout << " " << mat[i][j] << " ";
+            edges += mat[i][j];
         }
+        cout << endl;
     }
-    if (f == 0)
+    edges /= 2; 
+
+    int e_k = (vertices * (vertices - 1)) / 2; 
+
+    cout << endl
+         << "RESULT: ";
+
+    if (edges == e_k)
     {
-        cout << "Connected";
+        cout << "This is a complete graph" << endl;
     }
-    else if (f == 1)
+    else
     {
-        cout << "Disconnected";
+        cout << "This is not a complete graph" << endl;
     }
+    cout << endl;
+
     return 0;
 }
